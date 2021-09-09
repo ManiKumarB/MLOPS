@@ -1,5 +1,7 @@
 conda create -n MLOPS
+
 conda activate MLOPS
+
 pip install -r requirements.txt
 
 <!-- For Creating Folder Structure -->
