@@ -16,3 +16,9 @@ dvc add data_given\winequality.csv
 git add .
 
 git commit -m "First Commit"
+
+git remote add origin https://github.com/ManiKumarB/MLOPS.git
+
+git branch -M main
+
+git push origin main
