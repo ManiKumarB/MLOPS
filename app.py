@@ -7,7 +7,13 @@ import numpy as np
 
 params_path = "params.yaml"
 
-app = Flask(__name__)
+webapp_root = "webapp"
+static_dir = os.path.join(webapp_root, "static")
+template_dir = os.path.join(webapp_root, "templates")
+
+app = Flask(__name__, static_folder=static_dir,template_folder=template_dir)
+
+
 
 def read_params(config_path):
     with open(config_path) as yaml_file:
