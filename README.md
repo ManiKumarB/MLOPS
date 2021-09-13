@@ -22,3 +22,10 @@ git remote add origin https://github.com/ManiKumarB/MLOPS.git
 git branch -M main
 git push origin main
 ```
+
+
+```bash
+dvc repro
+dvc metrics show
+dvc metrics diff
+```
