@@ -4,8 +4,7 @@ from flask.wrappers import Response
 import yaml
 import joblib
 import numpy as np
-
-params_path = "params.yaml"
+from prediction_service import prediction
 
 webapp_root = "webapp"
 static_dir = os.path.join(webapp_root, "static")
@@ -13,45 +12,19 @@ template_dir = os.path.join(webapp_root, "templates")
 
 app = Flask(__name__, static_folder=static_dir,template_folder=template_dir)
 
-
-
-def read_params(config_path):
-    with open(config_path) as yaml_file:
-        config = yaml.safe_load(yaml_file)
-    return config
-
-def predict(data):
-    config = read_params(params_path)
-    model_dir_path = config["webapp_model_dir"]
-    model = joblib.load(model_dir_path)
-    prediction = model.predict(data)
-    return prediction
-
-def api_response(request):
-    try:
-        data = np.array([list(request.json.values())])
-        response = predict(data)
-        response = {"response":response}
-        return response
-    except Exception as e:
-        error = {"error":e}
-        return error
-
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         try:
             if request.form:
-                data = dict(request.form).values()
-                data = [list(map(float, data))]
-                response = predict(data)
-                return render_template("index.html", response=response[0])
+                data_req = dict(request.form)
+                response = prediction.form_response(data_req)
+                return render_template("index.html", response=response)
             elif request.json:
-                response = api_response(request)
+                response = prediction.api_response(request.json)
                 return jsonify(response)
         except Exception as e:
-            error = {"error": e}
-            return render_template("404.html", error=error)
+            return render_template("404.html", error=e)
     else:
         return render_template("index.html")
 
