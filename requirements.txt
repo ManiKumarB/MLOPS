@@ -3,3 +3,5 @@ dvc[gdrive]
 sklearn
 pytest
 tox
+flask
+gunicorn
